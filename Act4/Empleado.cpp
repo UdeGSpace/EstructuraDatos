@@ -1,19 +1,84 @@
 #include <iostream>
+#include <string>
+using namespace std;
+
+class Empleado {
+private:
+    int ClaveEmpleado;
+    string Nombre;
+    string Domicilio;
+    float Sueldo;
+    string Reporta;
+
+public:
+
+
+    void imprime() const {
+        cout << "Clave del Empleado: " << ClaveEmpleado << endl;
+        cout << "Nombre del Empleado: " << Nombre << endl;
+        cout << "Domicilio del Empleado: " << Domicilio << endl;
+        cout << "Sueldo del Empleado: " << Sueldo << endl;
+        cout << "Reporta a: " << Reporta << endl;
+    }
+
+    int getClaveEmpleado() const {
+        return ClaveEmpleado;
+    }
+
+    // Sobrecarga de operadores
+    bool operator==(const Empleado& other) const {
+        return ClaveEmpleado == other.ClaveEmpleado;
+    }
+
+    bool operator!=(const Empleado& other) const {
+        return ClaveEmpleado != other.ClaveEmpleado;
+    }
+
+
+    Empleado operator+(const Empleado& other) const {
+        int nuevaClave = ClaveEmpleado + other.ClaveEmpleado;
+        float nuevoSueldo = Sueldo + other.Sueldo;
+        string nuevoNombre = Nombre + " " + other.Nombre;
+        string nuevoDomicilio = Domicilio + " " + other.Domicilio;
+        string nuevoReporta = Reporta + " " + other.Reporta;
+        return Empleado();
+    }
+
+    friend ostream& operator<<(ostream& os, const Empleado& empleado) {
+        os << "Clave del Empleado: " << empleado.ClaveEmpleado << endl;
+        os << "Nombre del Empleado: " << empleado.Nombre << endl;
+        os << "Domicilio del Empleado: " << empleado.Domicilio << endl;
+        os << "Sueldo del Empleado: " << empleado.Sueldo << endl;
+        os << "Reporta a: " << empleado.Reporta << endl;
+        return os;
+    }
+
+    friend istream& operator>>(istream& is, Empleado& empleado) {
+        cout << "Ingresa la clave del empleado: ";
+        is >> empleado.ClaveEmpleado;
+        cout << "Ingresa el nombre del empleado: ";
+        is >> empleado.Nombre;
+        cout << "Ingresa el domicilio del empleado: ";
+        is >> empleado.Domicilio;
+        cout << "Ingresa el sueldo del empleado: ";
+        is >> empleado.Sueldo;
+        cout << "Ingresa a quién reporta el empleado: ";
+        is >> empleado.Reporta;
+        return is;
+    }
+};
 
 const int MAX = 100; // Tamaño máximo de la lista
 
-template <typename T>
 class ListaEstatica {
 private:
-    T Datos[MAX];
+    Empleado Datos[MAX];
     int Tam;
 
 public:
-    ListaEstatica() {
-        Tam = 0;
-    }
+    ListaEstatica():Tam(){}
 
-    int Inserta(T elemento, int posicion) {
+    int Inserta(Empleado elemento, int posicion) {
         if (posicion < 0 || posicion > Tam || Tam == MAX) {
             return -1; // Error: Posición no válida o lista llena
         }
@@ -27,7 +92,7 @@ public:
         return 0; // Éxito
     }
 
-    int Agrega(T elemento) {
+    int Agrega(Empleado elemento) {
         if (Tam == MAX) {
             return -1; // Error: Lista llena
         }
@@ -37,9 +102,9 @@ public:
         return 0; // Éxito
     }
 
-    int Busca(T elemento) {
+    int Busca(int elemento) {
         for (int i = 0; i < Tam; i++) {
-            if (Datos[i] == elemento) {
+            if (Datos[i].getClaveEmpleado() == elemento) {
                 return i; // Elemento encontrado en la posición i
             }
         }
@@ -59,8 +124,10 @@ public:
         return 0; // Éxito
     }
 
-    int Vacia() {
-        return (Tam == 0) ? 1 : 0; // 1 si la lista está vacía, 0 en otro caso
+    bool vacia()const{
+        if(Tam==-1)
+            return true;
+        return false;
     }
 
     int Llena() {
@@ -69,17 +136,16 @@ public:
 
     void Muestra() {
         for (int i = 0; i < Tam; i++) {
-            std::cout << Datos[i] << " ";
-        }
-        std::cout << std::endl;
+            std::cout << Datos[i] << " ";}
+            std::cout << std::endl;
     }
 };
 
 int main() {
-    ListaEstatica<int> lista;
-
+    ListaEstatica lista;
+    Empleado datosEmpleado;
     int opcion;
-    int elemento, posicion;
+    int elemento, posicion, codigo;
 
     do {
         // Mostrar el menú
@@ -96,8 +162,8 @@ int main() {
         switch (opcion) {
             case 1: // Agrega
                 std::cout << "Ingrese el elemento a agregar: ";
-                std::cin >> elemento;
-                lista.Agrega(elemento);
+                std::cin >> datosEmpleado;
+                lista.Agrega(datosEmpleado);
                 break;
 
             case 2: // Buscar
@@ -112,8 +178,9 @@ int main() {
                 break;
 
             case 3: // Elimina
-                std::cout << "Ingrese la posición del elemento a eliminar: ";
-                std::cin >> posicion;
+                std::cout << "Ingrese elcodigo del empleado a eliminar:  ";
+                std::cin >> elemento;
+                posicion = lista.Busca(elemento);
                 if (lista.Elimina(posicion) == 0) {
                     std::cout << "Elemento eliminado correctamente." << std::endl;
                 } else {
@@ -122,11 +189,11 @@ int main() {
                 break;
 
             case 4: // Inserta
-                std::cout << "Ingrese el elemento a insertar: ";
-                std::cin >> elemento;
+                std::cout << "Ingresa los datos del empleado a insertar: ";
+                std::cin >> datosEmpleado;
                 std::cout << "Ingrese la posición en la que desea insertar: ";
                 std::cin >> posicion;
-                if (lista.Inserta(elemento, posicion) == 0) {
+                if (lista.Inserta(datosEmpleado, posicion) == 0) {
                     std::cout << "Elemento insertado correctamente." << std::endl;
                 } else {
                     std::cout << "Error al insertar el elemento." << std::endl;
