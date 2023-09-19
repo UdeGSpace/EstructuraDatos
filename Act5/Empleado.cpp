@@ -76,7 +76,7 @@ private:
     int Tam;
 
 public:
-    ListaEstatica():Tam(){}
+    ListaEstatica() : Tam(-1) {}
 
     int Inserta(Empleado elemento, int posicion) {
         if (posicion < 0 || posicion > Tam || Tam == MAX) {
@@ -135,9 +135,18 @@ public:
     }
 
     void Muestra() {
-        for (int i = 0; i < Tam; i++) {
-            std::cout << Datos[i] << " ";}
-            std::cout << std::endl;
+        std::cout << Datos[Tam] << " ";
+        std::cout << std::endl;
+    }
+    void Apilar(Empleado& elem){
+            Inserta(elem,Ultimo()+1);
+    }
+    Empleado& Desapilar(){
+        Tam--;
+        return Datos[Tam];
+    }
+    int Ultimo()const{
+        return Tam;
     }
 };
 
@@ -146,65 +155,31 @@ int main() {
     Empleado datosEmpleado;
     int opcion;
     int elemento, posicion, codigo;
-
     do {
         // Mostrar el menú
         std::cout << "Menu:" << std::endl;
-        std::cout << "1. Agrega" << std::endl;
-        std::cout << "2. Buscar" << std::endl;
-        std::cout << "3. Elimina" << std::endl;
-        std::cout << "4. Inserta" << std::endl;
-        std::cout << "5. Muestra" << std::endl;
-        std::cout << "6. Salir" << std::endl;
+        std::cout << "1. Push" << std::endl;
+        std::cout << "2. Pop" << std::endl;
+        std::cout << "3. Top" << std::endl;
+        std::cout << "4. Salir" << std::endl;
         std::cout << "Seleccione una opcion: ";
         std::cin >> opcion;
 
         switch (opcion) {
-            case 1: // Agrega
+            case 1: // Push
                 std::cout << "Ingrese el elemento a agregar: ";
                 std::cin >> datosEmpleado;
-                lista.Agrega(datosEmpleado);
+                lista.Apilar(datosEmpleado);
                 break;
 
-            case 2: // Buscar
-                std::cout << "Ingrese el elemento a buscar: ";
-                std::cin >> elemento;
-                posicion = lista.Busca(elemento);
-                if (posicion != -1) {
-                    std::cout << "El elemento " << elemento << " se encuentra en la posición " << posicion << std::endl;
-                } else {
-                    std::cout << "El elemento " << elemento << " no se encuentra en la lista." << std::endl;
-                }
-                break;
+            case 2: // Pop
+                std::cout<<lista.Desapilar();
 
-            case 3: // Elimina
-                std::cout << "Ingrese elcodigo del empleado a eliminar:  ";
-                std::cin >> elemento;
-                posicion = lista.Busca(elemento);
-                if (lista.Elimina(posicion) == 0) {
-                    std::cout << "Elemento eliminado correctamente." << std::endl;
-                } else {
-                    std::cout << "Error al eliminar el elemento." << std::endl;
-                }
-                break;
-
-            case 4: // Inserta
-                std::cout << "Ingresa los datos del empleado a insertar: ";
-                std::cin >> datosEmpleado;
-                std::cout << "Ingrese la posición en la que desea insertar: ";
-                std::cin >> posicion;
-                if (lista.Inserta(datosEmpleado, posicion) == 0) {
-                    std::cout << "Elemento insertado correctamente." << std::endl;
-                } else {
-                    std::cout << "Error al insertar el elemento." << std::endl;
-                }
-                break;
-
-            case 5: // Muestra
+            case 3: // Top
                 lista.Muestra();
                 break;
 
-            case 6: // Salir
+            case 4: // Salir
                 std::cout << "Saliendo del programa." << std::endl;
                 break;
 
@@ -213,7 +188,7 @@ int main() {
                 break;
         }
 
-    } while (opcion != 6);
+    } while (opcion != 4);
 
     return 0;
 }
