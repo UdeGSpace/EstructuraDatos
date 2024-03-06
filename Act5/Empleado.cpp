@@ -88,42 +88,8 @@ public:
         }
 
         Datos[posicion] = elemento;
-        Tam++;
         return 0; // Éxito
     }
-
-    int Agrega(Empleado elemento) {
-        if (Tam == MAX) {
-            return -1; // Error: Lista llena
-        }
-
-        Datos[Tam] = elemento;
-        Tam++;
-        return 0; // Éxito
-    }
-
-    int Busca(int elemento) {
-        for (int i = 0; i < Tam; i++) {
-            if (Datos[i].getClaveEmpleado() == elemento) {
-                return i; // Elemento encontrado en la posición i
-            }
-        }
-        return -1; // Elemento no encontrado
-    }
-
-    int Elimina(int posicion) {
-        if (posicion < 0 || posicion >= Tam) {
-            return -1; // Error: Posición no válida
-        }
-
-        for (int i = posicion; i < Tam - 1; i++) {
-            Datos[i] = Datos[i + 1]; // Desplaza los elementos a la izquierda
-        }
-
-        Tam--;
-        return 0; // Éxito
-    }
-
     bool vacia()const{
         if(Tam==-1)
             return true;
@@ -135,16 +101,29 @@ public:
     }
 
     void Muestra() {
-        std::cout << Datos[Tam] << " ";
-        std::cout << std::endl;
+        if (vacia()) {
+            std::cout << "Lista vacía" << std::endl;
+        } else {
+            std::cout << Datos[Tam] << std::endl;
+        }
     }
-    void Apilar(Empleado& elem){
-            Inserta(elem,Ultimo()+1);
+    void Apilar(Empleado& elem) {
+        if (Tam + 1 < MAX) {
+            Tam++;
+            Datos[Tam] = elem;
+        } else {
+            std::cout << "No se puede apilar, lista llena" << std::endl;
+        }
     }
-    Empleado& Desapilar(){
-        Tam--;
+Empleado& Desapilar() {
+    if (vacia()) {
+        std::cout << "No se puede desapilar, lista vacía" << std::endl;
         return Datos[Tam];
     }
+    Tam--;
+    return Datos[Tam];
+}
+
     int Ultimo()const{
         return Tam;
     }
@@ -156,7 +135,6 @@ int main() {
     int opcion;
     int elemento, posicion, codigo;
     do {
-        // Mostrar el menú
         std::cout << "Menu:" << std::endl;
         std::cout << "1. Push" << std::endl;
         std::cout << "2. Pop" << std::endl;
@@ -173,7 +151,12 @@ int main() {
                 break;
 
             case 2: // Pop
-                std::cout<<lista.Desapilar();
+                if (lista.vacia()) {
+                    std::cout << "Lista vacía" << std::endl;
+                } else {
+                    std::cout << "Elemento desapilado: " << lista.Desapilar() << std::endl;
+                }
+                break;
 
             case 3: // Top
                 lista.Muestra();
