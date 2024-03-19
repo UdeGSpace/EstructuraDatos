@@ -1,4 +1,4 @@
-#include "Cola.h"
+#include "include/Cola.h"
 
 persona::persona() : nombre("juanito"), carrera("sin especificar"), materiasAprobadas(0), promedioGeneral(0.0) {}
 persona::persona(std::string n, std::string c, int materias, float promedio)
