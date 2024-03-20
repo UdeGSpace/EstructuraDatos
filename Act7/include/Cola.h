@@ -40,6 +40,8 @@ public:
     void enqueue(persona& elem);
     persona& dequeue();
     int busquedaLineal(persona&);
+    int busquedaBinaria(persona&);
+
 };
 
 #endif // COLA_H

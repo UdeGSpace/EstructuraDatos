@@ -1,6 +1,6 @@
 #include "include/Cola.h"
 
-persona::persona() : nombre("juanito"), carrera("sin especificar"), materiasAprobadas(0), promedioGeneral(0.0) {}
+persona::persona(){}
 persona::persona(std::string n, std::string c, int materias, float promedio)
     : nombre(n), carrera(c), materiasAprobadas(materias), promedioGeneral(promedio) {}
 
@@ -116,3 +116,30 @@ int Cola::busquedaLineal(persona& elem){
         }
     }
 }
+
+int Cola::busquedaBinaria(persona& elem) {
+    int i = 0;
+    int j = ult;
+
+    while (i <= j) {
+        int medio = (i + j) / 2;
+
+        if (datos[medio] == elem) {
+            // Si encontramos el elemento, devolvemos la posición y salimos del bucle
+            std::cout << "Su solicitud está en la posición: " << ult - i << std::endl;
+            return medio;
+        } else if (i < medio) {
+            // Si el elemento es menor que el elemento medio, ajustamos el límite superior (j)
+            j = medio - 1;
+        } else {
+            // Si el elemento es mayor que el elemento medio, ajustamos el límite inferior (i)
+            i = medio + 1;
+        }
+    }
+
+    // Si llegamos aquí, significa que no encontramos el elemento en la cola
+    std::cout << "La solicitud no fue encontrada en la cola." << std::endl;
+    return -1;
+}
+
+

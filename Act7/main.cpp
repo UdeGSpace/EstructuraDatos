@@ -10,8 +10,9 @@ int main() {
         std::cout << "Menu:" << std::endl;
         std::cout << "1. Dar de alta la solicitud de un alumno" << std::endl;
         std::cout << "2. Elaborar una constancia" << std::endl;
-        std::cout << "3. Buscar" << std::endl;
-        std::cout << "4. Salir" << std::endl;
+        std::cout << "3. Buscar Lineal" << std::endl;
+        std::cout << "4. Buscar Binario" << std::endl;
+        std::cout << "5. Salir" << std::endl;
         std::cout << "Seleccione una opcion: ";
         std::cin >> opcion;
 
@@ -39,7 +40,12 @@ int main() {
                 std::cin >> nuevoAlumno;
                 colaSolicitudes.busquedaLineal(nuevoAlumno);
                 break;
-            case 4: // Salir
+            case 4: // Buscar constancia
+                std::cout << "Ingresa el nombre del alumno a buscar" << std::endl;
+                std::cin >> nuevoAlumno;
+                colaSolicitudes.busquedaBinaria(nuevoAlumno);
+                break;                
+            case 5: // Salir
                 std::cout << "Saliendo del programa." << std::endl;
                 break;
 
@@ -48,7 +54,7 @@ int main() {
                 break;
         }
 
-    } while (opcion != 4);
+    } while (opcion != 5);
 
     return 0;
 }
